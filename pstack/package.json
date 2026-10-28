@@ -1,0 +1,13 @@
+{
+  "name": "dsh-pstack",
+  "version": "0.15.36-dsh.1",
+  "description": "pstack for DeepSeek Harness. poteto-mode, playbooks, and principle skills ported from cursor/plugins.",
+  "license": "MIT",
+  "keywords": ["dsh", "deepseek-harness", "pstack", "poteto-mode", "skills", "workflow", "principles"],
+  "files": ["cordis.patch.yml", "skills", "!skills/**/*.test.*", "!skills/**/node_modules", "!skills/statechart/scripts/test", "LICENSE", "README.md"],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}

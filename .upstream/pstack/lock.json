@@ -1,0 +1,11 @@
+{
+  "upstream": {
+    "url": "https://github.com/cursor/plugins.git",
+    "path": "pstack"
+  },
+  "synced": {
+    "commit": "23ab063af02bb9b9c97936b0563879dd6bf21a05",
+    "version": "0.15.36",
+    "date": "2026-10-28"
+  }
+}
