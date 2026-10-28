@@ -1,0 +1,325 @@
+{
+  "upstream": {
+    "url": "https://github.com/cursor/plugins.git",
+    "path": "pstack",
+    "ref": "main",
+    "versionFile": "plugin.json"
+  },
+  "target": "pstack",
+  "state": ".upstream/pstack",
+  "manifest": {
+    "file": "package.json",
+    "versionSuffix": "-dsh"
+  },
+  "paths": [
+    {
+      "match": "plugin.json",
+      "action": "skip",
+      "reason": "Cursor plugin manifest. The DSH manifest is pstack/package.json."
+    },
+    {
+      "match": ".cursor-plugin/**",
+      "action": "skip",
+      "reason": "Cursor marketplace manifest."
+    },
+    {
+      "match": ".gitignore",
+      "action": "skip",
+      "reason": "Housekeeping for the upstream repository."
+    },
+    {
+      "match": "assets/**",
+      "action": "skip",
+      "reason": "Marketplace logo, unused at runtime."
+    },
+    {
+      "match": "docs/**",
+      "action": "skip",
+      "reason": "Human guide written around Cursor's UI and custom modes. Not ported."
+    },
+    {
+      "match": "automations/**",
+      "action": "skip",
+      "reason": "Cursor Automations pack (hosted triggers and cloud agents). DSH has no equivalent."
+    },
+    {
+      "match": "skills/make-bot-ui/**",
+      "action": "skip",
+      "reason": "Builds pages that wake a Grok Bot over a webhook, a Cursor product."
+    },
+    {
+      "match": "README.md",
+      "action": "owned",
+      "reason": "pstack/README.md is written for DSH users. Upstream README changes are listed for manual carry-over."
+    },
+    {
+      "match": "agents/poteto-agent.md",
+      "action": "move",
+      "to": "skills/poteto-mode/references/poteto-agent.md",
+      "reason": "DSH has no named agent types. The definition becomes the preamble of every delegate prompt."
+    },
+    {
+      "match": "agents/comment-sicko.md",
+      "action": "move",
+      "to": "skills/no-comments/references/comment-sicko.md",
+      "reason": "DSH has no named agent types. The definition becomes a reviewer prompt that the no-comments skill points at."
+    },
+    {
+      "match": "LICENSE",
+      "action": "port"
+    },
+    {
+      "match": "skills/**",
+      "action": "port"
+    },
+    {
+      "match": "**",
+      "action": "unmapped",
+      "reason": "A new upstream path. Decide whether it ports, moves, is owned, or is skipped."
+    }
+  ],
+  "replace": [
+    {
+      "files": "skills/**/*.md",
+      "literal": "No `~/.cursor/rules/pstack-models.mdc` means",
+      "with": "A missing pstack models block in `$DSH_HOME/AGENTS.md` means"
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "`~/.cursor/rules/pstack-models.mdc`",
+      "with": "the pstack models block in `$DSH_HOME/AGENTS.md`"
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "the `pstack-models.mdc` rule",
+      "with": "the pstack models block"
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "If the rule or that line is missing",
+      "with": "If the block or that line is missing"
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "if the rule or the line is missing",
+      "with": "if the block or the line is missing"
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "grok-4.7-xhigh-fast",
+      "with": "deepseek-flash"
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "claude-opus-5-5-xhigh",
+      "with": "deepseek-v4-pro"
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "AskQuestion",
+      "with": "ask_user_question"
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "reasoning level and fast or standard speed",
+      "with": "reasoning effort"
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "a chart or diagram from `/visualize`",
+      "with": "a chart"
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "a `/visualize` chart for numbers",
+      "with": "a chart for numbers"
+    },
+    {
+      "files": "skills/poteto-mode/SKILL.md",
+      "literal": "in every `poteto-agent` prompt",
+      "with": "in every delegate prompt"
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/*.md",
+      "literal": "Each owner is a Cursor cloud agent",
+      "with": "Each owner is a local subagent with a disjoint file scope"
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/*.md",
+      "literal": "each a Cursor cloud agent",
+      "with": "each a local subagent"
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/*.md",
+      "literal": "with the matching control skill (such as `control-ui` or `control-cli` from `cursor-team-kit`)",
+      "with": "with the project's verification skill or the matching driver"
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/*.md",
+      "literal": "through its control skill (such as `control-ui` or `control-cli` from `cursor-team-kit`) or a named driver",
+      "with": "through the repo's matching verification skill or a named driver"
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/*.md",
+      "literal": "slop-strip (the `deslop` skill from the `cursor-team-kit` plugin (`/deslop`))",
+      "with": "slop-strip of its diff (Before commit in `../SKILL.md`)"
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/*.md",
+      "literal": "re-reads this playbook from trunk",
+      "with": "re-reads this playbook file"
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/*.md",
+      "literal": "the root agent's store (path in the system prompt)",
+      "with": "the pstack store (`<repo>/.pstack/`)"
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/*.md",
+      "literal": "Assume the VM dies.",
+      "with": "Assume the owner can be cut off at any point."
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/*.md",
+      "literal": "under `/loop` until it reports `COMPLETE` at the ceiling",
+      "with": "as a background `bash` job, blocking on `job_output` with `wait: true` and calling it again, until it reports `COMPLETE` at the ceiling"
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/*.md",
+      "literal": "arm `/loop 1h` to audit until no delegated work is left, because long runs drift and agents stall silently.",
+      "with": "arm a goal with `create_goal`, using this audit tick as the `objective` and enough `max_goal_rounds` for the program, to audit until no delegated work is left, because long runs drift and agents stall silently. DSH has no hourly timer, so space the ticks with a background `bash` job that runs `sleep 3600` and that you block on with `job_output` (`wait: true`, up to ten minutes per wait, so call it again)."
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/multi-phase-plan.md",
+      "literal": "`pstack/skills/swarm/SKILL.md`",
+      "with": "`<pstack skills>/swarm/SKILL.md`"
+    },
+    {
+      "files": "skills/poteto-mode/references/poteto-agent.md",
+      "literal": "every Task spawn",
+      "with": "every `subagent` spawn"
+    },
+    {
+      "files": "skills/poteto-mode/references/poteto-agent.md",
+      "literal": "Read the `poteto-mode` skill's `SKILL.md` in full",
+      "with": "Read `../SKILL.md` in full"
+    },
+    {
+      "files": "skills/poteto-mode/references/poteto-agent.md",
+      "literal": "Use the absolute path your parent gave you. With no path, before any other work, search `~/.cursor/plugins/` for a file whose path ends in `skills/poteto-mode/SKILL.md`. If more than one file matches, use the copy whose `.cursor-plugin/plugin.json` has the highest `version`. Your skill catalog hides this skill, so a missing catalog entry does not mean pstack is absent. If no such file exists, stop and tell your parent. ",
+      "with": "The skill catalog hides it, so a missing catalog entry does not mean pstack is absent. "
+    },
+    {
+      "files": "skills/create-formal-verification-skill/SKILL.md",
+      "literal": "Write a project-local skill with frontmatter that names the area and says when to use it.",
+      "with": "Follow [`../poteto-mode/references/dsh-skill-format.md`](../poteto-mode/references/dsh-skill-format.md). Write a project-local skill under `.agents/skills/` with frontmatter that names the area and says when to use it."
+    },
+    {
+      "files": "skills/reflect/SKILL.md",
+      "literal": "Never edit a skill under `plugins/cache/`. Before approval, show its destination, `.cursor/skills/<skill>/` or `~/.cursor/skills/<skill>/`. After approval, copy the skill folder there and edit the copy.",
+      "with": "Never edit a skill inside an installed bundle under `$DSH_HOME/profiles/`. Before approval, show its destination, `<repo>/.agents/skills/<skill>/` or `$DSH_HOME/skills/<skill>/`. After approval, copy the skill folder there and edit the copy.",
+      "reason": "Upstream keeps edits out of Cursor's plugin cache and sends them to .cursor/skills. DSH installs a bundle under the profile directory, and its skill roots are <repo>/.agents/skills and $DSH_HOME/skills (adaptation guide, Skills and Files and history)."
+    }
+  ],
+  "skills": {
+    "dir": "skills",
+    "descriptionLimit": 500,
+    "removeKeys": [
+      "mode",
+      "icon",
+      "color",
+      "reminder",
+      "paths"
+    ],
+    "overrides": [
+      {
+        "match": "typescript-best-practices",
+        "disableModelInvocation": false,
+        "reason": "Cursor attached it to .ts and .tsx files through the paths key. DSH has no path-scoped skills, so the model catalog is the closest trigger."
+      }
+    ],
+    "prelude": "> **pstack skill.** Most pstack skills are opt-in. The model catalog omits them and the `skill` tool refuses them. When this text names another pstack skill, `read` its `SKILL.md` in full at `../<name>/SKILL.md`, relative to the directory of this file. Users start a skill by typing `/<name>`."
+  },
+  "pruneGuard": {
+    "maxChars": 8192,
+    "headChars": 4096,
+    "sentinel": "tool result middle pruned",
+    "note": "> If a `[... tool result middle pruned ...]` marker cuts through this text, load the skill again before you rely on it."
+  },
+  "residue": [
+    {
+      "id": "cursor-task-tool",
+      "pattern": "\\bsubagent_type\\b|\\bcloud_base_branch\\b|\\breadonly: true\\b|`Task`|\\bTask (?:tool|call|subagent)",
+      "files": "skills/**/*.md",
+      "message": "Cursor Task tool vocabulary. DSH spawns children with the subagent tool, see references/adaptation-guide.md, Subagents."
+    },
+    {
+      "id": "cursor-product",
+      "pattern": "\\bCursor\\b|cursor\\.com|cursor\\.sh",
+      "files": "skills/**/*.md",
+      "message": "Reference to the Cursor product. Say what DSH does, or drop the sentence."
+    },
+    {
+      "id": "cursor-paths",
+      "pattern": "~/\\.cursor|\\.cursor/|\\.cursor-plugin|cursor-team-kit|agent-transcripts|\\.mdc\\b",
+      "files": "skills/**",
+      "message": "Cursor file layout or plugin. See references/adaptation-guide.md, Files and history."
+    },
+    {
+      "id": "cursor-model-slug",
+      "pattern": "\\b(?:grok|claude|gpt|composer|gemini)-[0-9a-z.-]+",
+      "files": "skills/**/*.md",
+      "message": "Model slug from another provider. DSH roles map to deepseek-flash or deepseek-v4-pro through the pstack models block."
+    },
+    {
+      "id": "cursor-surface",
+      "pattern": "/add-plugin|/loop\\b|custom mode|option\\+enter|\\bcloud (?:agent|worker|environment)s?\\b|environment: \"cloud\"",
+      "files": "skills/**/*.md",
+      "message": "Cursor-only surface. DSH has no custom modes, cloud agents, or /loop. See references/adaptation-guide.md."
+    },
+    {
+      "id": "cursor-external-skill",
+      "pattern": "\\b(?:deslop|control-ui|control-cli|create-skill)\\b|/visualize\\b",
+      "files": "skills/**/*.md",
+      "message": "Skill from another Cursor plugin or Cursor's built-ins. DSH does not ship it."
+    },
+    {
+      "id": "repo-rooted-path",
+      "pattern": "(?<![\\w./<>-])pstack/(?:skills|scripts)/|git show origin/main:pstack",
+      "files": "skills/**/*.md",
+      "message": "A path rooted in the upstream repository. The bundle installs outside the user's repository. Use <poteto-mode directory> or <pstack skills>, see references/adaptation-guide.md, Files and history."
+    },
+    {
+      "id": "cursor-effort-speed",
+      "pattern": "\\bxhigh\\b|fast mode|fast or standard speed|\\bstandard speed\\b|-fast\\b",
+      "files": "skills/**/*.md",
+      "message": "Cursor effort and speed levels. DSH efforts are off, low, high, and max, and DSH has no speed setting. See references/adaptation-guide.md, Models and roles."
+    },
+    {
+      "id": "cursor-claude-code",
+      "pattern": "Claude Code|\\.claude/|/pstack:",
+      "files": "skills/**/*.md",
+      "message": "Claude Code install or adapter text. The DSH bundle installs with dsh plugin add, and the upstream docs are not ported."
+    }
+  ],
+  "allow": [
+    {
+      "id": "broken-link",
+      "path": "skills/why/references/synthesizer-prompt.md",
+      "contains": "[PR #123](url)",
+      "reason": "The link is a placeholder inside a prompt example that the synthesizer fills in. Upstream ships it unchanged."
+    },
+    {
+      "id": "cursor-product",
+      "path": "skills/poteto-mode/references/dsh-skill-format.md",
+      "contains": "Cursor's `mode`",
+      "reason": "DSH-owned note that names the Cursor-only frontmatter keys DSH ignores, so an author who ports a Cursor skill knows to drop them."
+    },
+    {
+      "id": "cursor-model-slug",
+      "path": "skills/reflect/references/synthesizer.md",
+      "contains": "gpt-4",
+      "reason": "The `gpt-4` rename is an example of a trivial code fix inside the synthesizer's rubric. It is not a model route. Upstream ships it unchanged."
+    }
+  ]
+}

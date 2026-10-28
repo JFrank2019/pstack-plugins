@@ -1,0 +1,331 @@
+{
+  "upstream": {
+    "url": "https://github.com/cursor/plugins.git",
+    "path": "pstack",
+    "ref": "main",
+    "versionFile": "plugin.json"
+  },
+  "target": "codex",
+  "state": ".upstream/codex",
+  "manifest": {
+    "file": "plugin.json",
+    "versionSuffix": "-codex"
+  },
+  "paths": [
+    {
+      "match": "plugin.json",
+      "action": "owned",
+      "reason": "Codex plugin manifest. Upstream's names Cursor's layout, so codex/plugin.json is written by hand and carries the -codex version."
+    },
+    {
+      "match": ".cursor-plugin/**",
+      "action": "skip",
+      "reason": "Cursor marketplace manifest."
+    },
+    {
+      "match": ".gitignore",
+      "action": "skip",
+      "reason": "Housekeeping for the upstream repository."
+    },
+    {
+      "match": "assets/**",
+      "action": "skip",
+      "reason": "Marketplace logo, unused at runtime."
+    },
+    {
+      "match": "docs/**",
+      "action": "skip",
+      "reason": "Human guide written around Cursor's UI and custom modes, plus a Claude Code adapter note. The Codex adapter notes live in codex/skills/poteto-mode/references/codex-tools.md."
+    },
+    {
+      "match": "automations/**",
+      "action": "skip",
+      "reason": "Cursor Automations pack (hosted triggers and cloud agents). Codex has no equivalent."
+    },
+    {
+      "match": "skills/make-bot-ui/**",
+      "action": "skip",
+      "reason": "Builds pages that wake a Grok Bot over a webhook, a Cursor product."
+    },
+    {
+      "match": "README.md",
+      "action": "owned",
+      "reason": "codex/README.md is written for Codex users. Upstream README changes are listed for manual carry-over."
+    },
+    {
+      "match": "agents/poteto-agent.md",
+      "action": "move",
+      "to": "skills/poteto-mode/references/poteto-agent.md",
+      "reason": "A plugin cannot ship named agent types, and spawn_agent starts children from a message. The definition becomes the preamble of every delegate prompt."
+    },
+    {
+      "match": "agents/comment-sicko.md",
+      "action": "move",
+      "to": "skills/no-comments/references/comment-sicko.md",
+      "reason": "A plugin cannot ship named agent types, and spawn_agent starts children from a message. The definition becomes a reviewer prompt that the no-comments skill points at."
+    },
+    {
+      "match": "LICENSE",
+      "action": "port"
+    },
+    {
+      "match": "skills/**",
+      "action": "port"
+    },
+    {
+      "match": "**",
+      "action": "unmapped",
+      "reason": "A new upstream path. Decide whether it ports, moves, is owned, or is skipped."
+    }
+  ],
+  "replace": [
+    {
+      "files": "skills/**/*.md",
+      "literal": "No `~/.cursor/rules/pstack-models.mdc` means",
+      "with": "A missing pstack models block in `$CODEX_HOME/AGENTS.md` means"
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "`~/.cursor/rules/pstack-models.mdc`",
+      "with": "the pstack models block in `$CODEX_HOME/AGENTS.md`"
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "the `pstack-models.mdc` rule",
+      "with": "the pstack models block"
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "If the rule or that line is missing",
+      "with": "If the block or that line is missing"
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "if the rule or the line is missing",
+      "with": "if the block or the line is missing"
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "grok-4.7-xhigh-fast",
+      "with": "inherit-parent",
+      "reason": "Codex ships no baked-in model routing. Spawn calls leave model and reasoning_effort unset until /setup-pstack writes the user's choices (spawn_agent says to set model only when the user asks)."
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "claude-opus-5-5-xhigh",
+      "with": "inherit-parent",
+      "reason": "Same as the grok-4.7-xhigh-fast rule."
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "AskQuestion",
+      "with": "request_user_input",
+      "reason": "Codex's structured question tool. It works in Plan mode only, so each caller names the plain-text fallback, see codex-tools.md."
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "reasoning level and fast or standard speed",
+      "with": "reasoning effort"
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "a chart or diagram from `/visualize`",
+      "with": "a chart"
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "a `/visualize` chart for numbers",
+      "with": "a chart for numbers"
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": "~/.cursor/skills/",
+      "with": "~/.agents/skills/",
+      "reason": "Codex scans ~/.agents/skills for user skills."
+    },
+    {
+      "files": "skills/**/*.md",
+      "literal": ".cursor/skills/",
+      "with": ".agents/skills/",
+      "reason": "Codex scans <repo>/.agents/skills for project skills."
+    },
+    {
+      "files": "skills/poteto-mode/SKILL.md",
+      "literal": "in every `poteto-agent` prompt",
+      "with": "in every delegate prompt"
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/*.md",
+      "literal": "Each owner is a Cursor cloud agent",
+      "with": "Each owner is a local subagent with a disjoint file scope"
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/*.md",
+      "literal": "each a Cursor cloud agent",
+      "with": "each a local subagent"
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/*.md",
+      "literal": "with the matching control skill (such as `control-ui` or `control-cli` from `cursor-team-kit`)",
+      "with": "with the project's verification skill or the matching driver"
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/*.md",
+      "literal": "through its control skill (such as `control-ui` or `control-cli` from `cursor-team-kit`) or a named driver",
+      "with": "through the repo's matching verification skill or a named driver"
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/*.md",
+      "literal": "slop-strip (the `deslop` skill from the `cursor-team-kit` plugin (`/deslop`))",
+      "with": "slop-strip of its diff (Before commit in `../SKILL.md`)"
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/*.md",
+      "literal": "re-reads this playbook from trunk",
+      "with": "re-reads this playbook file"
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/*.md",
+      "literal": "the root agent's store (path in the system prompt)",
+      "with": "the pstack store (`<repo>/.pstack/`)"
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/*.md",
+      "literal": "Assume the VM dies.",
+      "with": "Assume the owner can be cut off at any point."
+    },
+    {
+      "files": "skills/poteto-mode/playbooks/multi-phase-plan.md",
+      "literal": "`pstack/skills/swarm/SKILL.md`",
+      "with": "`<pstack skills>/swarm/SKILL.md`"
+    },
+    {
+      "files": "skills/**/*.md",
+      "pattern": "(?<![\\w./<>:$-])/({skills})\\b",
+      "with": "$$pstack:$1",
+      "reason": "Codex starts a plugin skill with $<plugin>:<skill>, and a bare /<skill> is not a command."
+    }
+  ],
+  "skills": {
+    "dir": "skills",
+    "removeKeys": [
+      "mode",
+      "icon",
+      "color",
+      "reminder",
+      "paths"
+    ],
+    "overrides": [
+      {
+        "match": "typescript-best-practices",
+        "disableModelInvocation": false,
+        "reason": "Cursor attached it to .ts and .tsx files through the paths key. Codex has no path-scoped skills, so the skill list is the closest trigger."
+      }
+    ],
+    "optInSidecar": {
+      "path": "agents/openai.yaml",
+      "content": "policy:\n  allow_implicit_invocation: false\n"
+    },
+    "prelude": "> **pstack skill.** Most pstack skills are opt-in. Codex leaves them out of the skill list that the model sees, and users start one by typing `$pstack:<name>`. When this text names another pstack skill, read its `SKILL.md` in full at `../<name>/SKILL.md`, relative to the directory of this file. Tool names in pstack are Codex's. [`codex-tools.md`](../poteto-mode/references/codex-tools.md) says what to do when one is missing."
+  },
+  "residue": [
+    {
+      "id": "cursor-task-tool",
+      "pattern": "\\bsubagent_type\\b|\\bcloud_base_branch\\b|\\breadonly: true\\b|`Task`|\\bTask (?:tool|call|subagent)",
+      "files": "skills/**/*.md",
+      "message": "Cursor Task tool vocabulary. Codex spawns children with spawn_agent, see codex-tools.md, Subagents."
+    },
+    {
+      "id": "cursor-tool-name",
+      "pattern": "\\bAskQuestion\\b|\\bTodoWrite\\b|\\bSwitchMode\\b",
+      "files": "skills/**/*.md",
+      "message": "Cursor tool name. Codex's equivalents are in codex-tools.md."
+    },
+    {
+      "id": "cursor-product",
+      "pattern": "\\bCursor\\b|cursor\\.com|cursor\\.sh",
+      "files": "skills/**/*.md",
+      "message": "Reference to the Cursor product. Say what Codex does, or drop the sentence."
+    },
+    {
+      "id": "cursor-paths",
+      "pattern": "~/\\.cursor|\\.cursor/|\\.cursor-plugin|cursor-team-kit|agent-transcripts|\\.mdc\\b",
+      "files": "skills/**",
+      "message": "Cursor file layout or plugin. See codex-tools.md, Files and history."
+    },
+    {
+      "id": "cursor-model-slug",
+      "pattern": "\\b(?:grok|claude|composer|gemini)-[0-9a-z.-]+|\\bgpt-[0-9a-z.-]+",
+      "files": "skills/**/*.md",
+      "message": "Model slug from another provider. Codex roles map to models through the pstack models block."
+    },
+    {
+      "id": "cursor-surface",
+      "pattern": "/add-plugin|/loop\\b|custom mode|option\\+enter|\\bcloud (?:agent|worker|environment)s?\\b|environment: \"cloud\"",
+      "files": "skills/**/*.md",
+      "message": "Cursor-only surface. Codex has no custom modes, cloud agents, or /loop. See codex-tools.md."
+    },
+    {
+      "id": "cursor-external-skill",
+      "pattern": "\\b(?:deslop|control-ui|control-cli|create-skill)\\b|/visualize\\b",
+      "files": "skills/**/*.md",
+      "message": "Skill from another Cursor plugin or Cursor's built-ins. Codex does not ship it."
+    },
+    {
+      "id": "repo-rooted-path",
+      "pattern": "(?<![\\w./<>-])pstack/(?:skills|scripts)/|git show origin/main:pstack",
+      "files": "skills/**/*.md",
+      "message": "A path rooted in the upstream repository. The bundle installs outside the user's repository. Use <poteto-mode directory> or <pstack skills>."
+    },
+    {
+      "id": "cursor-effort-speed",
+      "pattern": "fast mode|fast or standard speed|\\bstandard speed\\b|-fast\\b",
+      "files": "skills/**/*.md",
+      "message": "Cursor speed levels. Codex subagents take a model and a reasoning effort, nothing else. See codex-tools.md, Models and roles."
+    },
+    {
+      "id": "cursor-claude-code",
+      "pattern": "Claude Code|\\.claude/|/pstack:",
+      "files": "skills/**/*.md",
+      "message": "Claude Code install or adapter text. The Codex bundle installs with codex plugin add and starts skills with $pstack:<name>."
+    },
+    {
+      "id": "bare-skill-slash",
+      "pattern": "(?<![\\w./<>:$-])/({skills})\\b",
+      "files": "skills/**/*.md",
+      "message": "A bare /<skill>. Codex starts a skill with $pstack:<skill>."
+    },
+    {
+      "id": "dsh-vocabulary",
+      "pattern": "\\$DSH_HOME|\\bDSH\\b|\\bdsh\\b|ask_user_question|list_subagent_models|\\bjob_output\\b|inherit-parent\\)? is always valid",
+      "files": "skills/**",
+      "message": "Wording from the DSH bundle. Codex's tool names and paths are in codex-tools.md."
+    }
+  ],
+  "allow": [
+    {
+      "id": "broken-link",
+      "path": "skills/why/references/synthesizer-prompt.md",
+      "contains": "[PR #123](url)",
+      "reason": "The link is a placeholder inside a prompt example that the synthesizer fills in. Upstream ships it unchanged."
+    },
+    {
+      "id": "cursor-model-slug",
+      "path": "skills/reflect/references/synthesizer.md",
+      "contains": "gpt-4",
+      "reason": "The `gpt-4` rename is an example of a trivial code fix inside the synthesizer's rubric. It is not a model route. Upstream ships it unchanged."
+    },
+    {
+      "id": "cursor-product",
+      "path": "skills/poteto-mode/references/codex-skill-format.md",
+      "contains": "Cursor's `mode`",
+      "reason": "Codex-owned note that names the Cursor-only frontmatter keys Codex ignores, so an author who ports a Cursor skill knows to drop them."
+    },
+    {
+      "id": "cursor-surface",
+      "path": "skills/poteto-mode/references/codex-tools.md",
+      "contains": "Codex has no `/loop`",
+      "reason": "Codex-owned note for readers who know Cursor's /loop. It says what to use instead."
+    }
+  ]
+}
