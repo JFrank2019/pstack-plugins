@@ -8,7 +8,7 @@
 
 ## 历史重建
 
-写完这份报告之后,仓库的 git 历史被重建为 4 个提交,按工具、DSH 版、Codex 版、文档与审计记录划分,并用 force push 推送。重建前后的文件树相同,只改了本文件和 `consolidation.tsv`。下文和 `.audit/` 里出现的旧提交哈希指重建前的历史,在当前仓库里已不存在。重建过程见 `consolidation.tsv` 的 `h0-frame` 到 `h5-docs` 行,之后的收尾见 `i0-authorize` 到 `i9-publish` 行。重建前的完整备份已按你的要求删除,本地旧对象也已清理,旧历史不再能还原。
+写完这份报告之后,仓库的 git 历史被重建为 4 个提交,按工具、DSH 版、Codex 版、文档与审计记录划分,并用 force push 推送。重建前后的文件树相同,只改了本文件和 `consolidation.tsv`。下文和 `.audit/` 里出现的旧提交哈希指重建前的历史。这些提交已不在 `main` 的历史里,本机的对象库里也已清掉。重建过程见 `consolidation.tsv` 的 `h0-frame` 到 `h5-docs` 行,之后的收尾见 `i0-authorize` 到 `i10-remote-dangling` 行。重建前的完整备份已按你的要求删除,本地旧对象也已清理,本机已无法还原旧历史。GitHub 服务器上被覆盖的旧提交还在,可以按哈希取到,回收时间由 GitHub 决定(`i10-remote-dangling`)。
 
 ## 结论
 
@@ -68,7 +68,7 @@
 
 ## 遗留项
 
-1. **旧 GitHub 仓库 `JFrank2019/dsh-plugins` 已不存在,这一项已解决。** 它删除前是私有的,0 fork、0 star、0 issue 和 PR、0 release、0 tag,只有 `main`(取自 2026-10-28 的检查)。它的最终内容在新仓库里。它的 3 个提交(含 0.15.20 和 0.15.28 的版本)没有被历史重建收录,重建前的备份又已按你的要求删除,所以在我知道的位置(旧 GitHub 仓库、备份、本地对象库)里都不再有它们的副本。
+1. **旧 GitHub 仓库 `JFrank2019/dsh-plugins` 已不存在,这一项已解决。** 它删除前是私有的,0 fork、0 star、0 issue 和 PR、0 release、0 tag,只有 `main`(取自 2026-10-28 的检查)。它的最终内容在新仓库里。它的 3 个提交(含 0.15.20 和 0.15.28 的版本)没有被历史重建收录,重建前的备份又已按你的要求删除,所以旧 GitHub 仓库、备份和本地对象库里都不再有它们的副本。GitHub 上 `pstack-plugins` 的服务器端还留着它们的不可达副本,按哈希 `3a8ad07f39d9` 用 `git fetch` 实测能取回这 3 个提交,回收时间由 GitHub 决定(`i10-remote-dangling`)。
 2. 删除旧目录前,有 4 个你自己 10 月 25 日起运行的进程以它为工作目录(`zcode-cli`、`cursor-agent` 和它的 sequential-thinking MCP 服务)。它们仍在运行,但工作目录已不存在,新会话请在 `pstack-plugins` 里打开。
 3. `~/.codex/.codex-global-state.json`(及 `.bak`)和 `~/.config/magpie/routing/2026-10-28.jsonl` 里还有旧路径字符串。它们是应用状态和日志,我没有读取内容也没有改动;如果 Codex 应用的最近工作区里还显示旧路径,手动移除即可。`~/.dsh` 没有引用旧路径。
 4. 新仓库是私有的,所以从 GitHub 安装 Codex 插件或 DSH 包时需要 git 凭据;本地路径安装不受影响。
