@@ -123,5 +123,5 @@ A DSH session log is zstd-compressed JSON Lines. Read it with `zstd -dc <file> |
 ## Before you hand back
 
 1. `node .agents/skills/sync-pstack/scripts/sync.mjs check --target dsh` shows no new findings for your files. An allowlist entry in `rules.dsh.json` needs a real reason and is the maintainer's call.
-2. `node .agents/skills/sync-pstack/scripts/verify-dsh/verify-dsh.mjs --bundle pstack` passes if you touched frontmatter, the prelude, or file layout.
+2. `node .agents/skills/sync-pstack/scripts/verify-dsh/verify-dsh.mjs --bundle harnesses/dsh` passes if you touched frontmatter, the prelude, or file layout.
 3. Your report names each Cursor concept you could not map and what the file now says about it.

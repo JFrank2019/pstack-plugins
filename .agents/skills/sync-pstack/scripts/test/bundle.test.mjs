@@ -9,8 +9,8 @@ import { fileURLToPath } from 'node:url'
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../../..')
 
 const bundles = [
-  { dir: 'pstack', model: 'deepseek-flash' },
-  { dir: 'codex', model: 'gpt-5.5' },
+  { dir: 'harnesses/dsh', model: 'deepseek-flash' },
+  { dir: 'harnesses/codex', model: 'gpt-5.5' },
 ]
 
 describe('bundle', () => {

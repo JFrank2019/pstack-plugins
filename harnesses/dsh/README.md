@@ -16,7 +16,7 @@ The port rewrites the parts that depend on Cursor so they run on DSH. Where Curs
 Add the bundle to a profile:
 
 ```sh
-dsh plugin --profile <profile> add /path/to/pstack-plugins/pstack
+dsh plugin --profile <profile> add /path/to/pstack-plugins/harnesses/dsh
 ```
 
 `dsh plugin` passes its arguments to pnpm in the profile directory. This repository tests a local path only. To check the install, run `dsh --profile <profile> --dump-config` and look for the `dsh-pstack` rows.

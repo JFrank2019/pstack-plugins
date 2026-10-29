@@ -20,7 +20,7 @@ codex plugin marketplace add /path/to/pstack-plugins
 codex plugin add pstack@pstack-plugins
 ```
 
-The marketplace manifest is `.agents/plugins/marketplace.json`, and it points at this `codex/` directory. This repository tests the local path only. To install from GitHub, use `codex plugin marketplace add JFrank2019/pstack-plugins`. The repository is private, so `git` needs credentials for it. To check the install, run `codex plugin list` and look for `pstack@pstack-plugins`.
+The marketplace manifest is `.agents/plugins/marketplace.json`, and it points at this `harnesses/codex/` directory. This repository tests the local path only. To install from GitHub, use `codex plugin marketplace add JFrank2019/pstack-plugins`. To check the install, run `codex plugin list` and look for `pstack@pstack-plugins`.
 
 Then start Codex and type `$pstack:setup-pstack`. It asks for a reasoning budget, maps a model to each role, and writes the pstack models block in `$CODEX_HOME/AGENTS.md`. Type `$pstack:poteto-help` for a tour.
 

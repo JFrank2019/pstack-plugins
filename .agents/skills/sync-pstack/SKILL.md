@@ -1,11 +1,11 @@
 ---
 name: sync-pstack
-description: Sync the pstack bundles in `pstack/` (DeepSeek Harness) and `codex/` (Codex) with upstream pstack from cursor/plugins. Use when upstream pstack changed or the user says "sync pstack", "update pstack from upstream", "pstack 更新了", or "同步 pstack". Merges upstream changes, keeps each harness's adaptations, and proves each result loads in a real build of its harness.
+description: Sync the pstack bundles in `harnesses/dsh/` (DeepSeek Harness) and `harnesses/codex/` (Codex) with upstream pstack from cursor/plugins. Use when upstream pstack changed or the user says "sync pstack", "update pstack from upstream", "pstack 更新了", or "同步 pstack". Merges upstream changes, keeps each harness's adaptations, and proves each result loads in a real build of its harness.
 ---
 
 # Sync pstack
 
-`pstack/` and `codex/` are upstream pstack with the Cursor-specific parts rewritten for DeepSeek Harness (DSH) and for Codex. `scripts/sync.mjs` re-runs each mechanical rewrite on new upstream commits and three-way merges the result into its bundle, so the hand adaptations survive. You do the semantic adaptation the script cannot.
+`harnesses/dsh/` and `harnesses/codex/` are upstream pstack with the Cursor-specific parts rewritten for DeepSeek Harness (DSH) and for Codex. `scripts/sync.mjs` re-runs each mechanical rewrite on new upstream commits and three-way merges the result into its bundle, so the hand adaptations survive. You do the semantic adaptation the script cannot.
 
 Run every command from the repository root. Needs `git` and Node 20.11 or later. `sync` below means `node .agents/skills/sync-pstack/scripts/sync.mjs`, and options go after the command, as in `sync plan --target dsh --to <commit>`.
 
@@ -13,8 +13,8 @@ A target is a `rules.<target>.json` file next to this `SKILL.md`.
 
 | Target | Bundle | Sync state | Verify |
 |---|---|---|---|
-| `dsh` | `pstack/` | `.upstream/pstack/` | `verify-dsh/verify-dsh.mjs --bundle pstack` |
-| `codex` | `codex/` | `.upstream/codex/` | `verify-codex/verify-codex.mjs` |
+| `dsh` | `harnesses/dsh/` | `.upstream/dsh/` | `verify-dsh/verify-dsh.mjs --bundle harnesses/dsh` |
+| `codex` | `harnesses/codex/` | `.upstream/codex/` | `verify-codex/verify-codex.mjs` |
 
 `status` and `check` cover every target when you leave out `--target`. `plan`, `apply`, and `finish` need one. Sync the targets one after the other. If the user named one harness, sync only that one. Below, `<state>` is the sync state directory from the table.
 
@@ -46,12 +46,12 @@ In a Codex session the default sandbox has no network and keeps paths outside th
    - Resolve a conflict by keeping our wording for the target and carrying upstream's new intent in the target's terms. Remove every marker.
    - With many files, delegate to subagents, one disjoint file set each, blocking so that you get every result in the same step (`subagent` with `run_in_background: false` in DSH, `spawn_agent` then `wait_agent` in Codex). Tell each to read both guide pages in full, to leave `scripts/`, the rules files, and `.upstream/` alone, and to report each Cursor concept it could not map. Review every diff yourself. A report is not evidence.
    - Put a fix that every future sync needs into the target's rules file (a `replace` literal, a skill override, a residue pattern), then run `sync apply` again. Our adaptations survive the rerun, which proves the rule replays.
-   - Set the bundle version to `<upstream version>-dsh.1` in `pstack/package.json`, or `<upstream version>-codex.1` in `codex/plugin.json`.
-   - Carry owned-file changes into the bundle's README, `pstack/README.md` or `codex/README.md`. The old and new upstream copies are `.upstream/<state>/base/owned/` and `.upstream/<state>/pending/owned/`.
+   - Set the bundle version to `<upstream version>-dsh.1` in `harnesses/dsh/package.json`, or `<upstream version>-codex.1` in `harnesses/codex/plugin.json`.
+   - Carry owned-file changes into the bundle's README, `harnesses/dsh/README.md` or `harnesses/codex/README.md`. The old and new upstream copies are `.upstream/<state>/base/owned/` and `.upstream/<state>/pending/owned/`.
 
 5. **Check.** Run `sync check --target <target>` until it prints `check passed`. It covers residue, broken links, frontmatter, the loading prelude, conflict markers, and the bundle version, and for DSH the reload note, and for Codex the opt-in sidecars. An `allow` entry in a rules file needs an `id`, a `path`, and a real `reason`. Delete entries that `allow-unused` reports. Run `cd .agents/skills/sync-pstack/scripts && node --test 'test/*.test.mjs'` when you edited `scripts/`, a `multi-phase-plan.md`, or a `check-plan.mjs`. One test runs each bundle's plan checker on its plan skeleton, so it fails when the two drift. When the sync changed `skills/poteto-mode/scripts/` in a bundle, also run its bun tests (see the repository README).
 
-6. **Verify in a real build.** For DSH, run `node .agents/skills/sync-pstack/scripts/verify-dsh/verify-dsh.mjs --bundle pstack`. It installs the bundle into a real DSH build with a throwaway `DSH_HOME` and a mock model endpoint. The first run installs the DSH CLI under `~/.cache/dsh-plugins-sync`, and `--dsh-version <version>` tests another build. For Codex, run `node .agents/skills/sync-pstack/scripts/verify-codex/verify-codex.mjs`. It installs the plugin into the `codex` on your `PATH` with a throwaway `CODEX_HOME` and a mock model endpoint. Every check must print `PASS`. Never point either at the real `~/.dsh` or `~/.codex`.
+6. **Verify in a real build.** For DSH, run `node .agents/skills/sync-pstack/scripts/verify-dsh/verify-dsh.mjs --bundle harnesses/dsh`. It installs the bundle into a real DSH build with a throwaway `DSH_HOME` and a mock model endpoint. The first run installs the DSH CLI under `~/.cache/dsh-plugins-sync`, and `--dsh-version <version>` tests another build. For Codex, run `node .agents/skills/sync-pstack/scripts/verify-codex/verify-codex.mjs`. It installs the plugin into the `codex` on your `PATH` with a throwaway `CODEX_HOME` and a mock model endpoint. Every check must print `PASS`. Never point either at the real `~/.dsh` or `~/.codex`.
 
 7. **Finish.** Run `sync finish --target <target>`. It reruns `check`, promotes the pending snapshot to `.upstream/<state>/base`, and records the commit in `.upstream/<state>/lock.json`. The next sync diffs from there. Run `sync status` and confirm that every target you synced prints `up to date`.
 

@@ -6,11 +6,11 @@ Read this before you edit a file that `scripts/sync.mjs` reports as `add`, `conf
 
 | | `dsh` | `codex` |
 |---|---|---|
-| Bundle | `pstack/` | `codex/` |
+| Bundle | `harnesses/dsh/` | `harnesses/codex/` |
 | Rules | `rules.dsh.json` | `rules.codex.json` |
-| Sync state | `.upstream/pstack/` | `.upstream/codex/` |
-| Version | `version` in `pstack/package.json`, `<upstream>-dsh.N` | `version` in `codex/plugin.json`, `<upstream>-codex.N` |
-| Verify | `scripts/verify-dsh/verify-dsh.mjs --bundle pstack` | `scripts/verify-codex/verify-codex.mjs` |
+| Sync state | `.upstream/dsh/` | `.upstream/codex/` |
+| Version | `version` in `harnesses/dsh/package.json`, `<upstream>-dsh.N` | `version` in `harnesses/codex/plugin.json`, `<upstream>-codex.N` |
+| Verify | `scripts/verify-dsh/verify-dsh.mjs --bundle harnesses/dsh` | `scripts/verify-codex/verify-codex.mjs` |
 | A user starts a skill with | `/<name>` | `$pstack:<name>` |
 
 Both bundles come from the same upstream directory, and each is adapted on its own, because a Cursor concept maps differently onto each harness. Keep them on one upstream commit. Pass the same `--to <commit>` to both syncs, so that an upstream push in between does not split them.

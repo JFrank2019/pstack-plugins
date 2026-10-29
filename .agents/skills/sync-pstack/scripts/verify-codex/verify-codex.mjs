@@ -91,7 +91,7 @@ async function main() {
   const marketplaceFile = path.join(repo, '.agents', 'plugins', 'marketplace.json')
   const marketplace = readJson(marketplaceFile)
   const entry = marketplace?.plugins?.find((plugin) => plugin.name === 'pstack')
-  const bundle = path.resolve(repo, entry?.source?.path ?? 'codex')
+  const bundle = path.resolve(repo, entry?.source?.path ?? 'harnesses/codex')
   const manifest = readJson(path.join(bundle, 'plugin.json'))
   const skillsDir = path.join(bundle, 'skills')
 

@@ -5,7 +5,7 @@
     "ref": "main",
     "versionFile": "plugin.json"
   },
-  "target": "codex",
+  "target": "harnesses/codex",
   "state": ".upstream/codex",
   "manifest": {
     "file": "plugin.json",
@@ -15,7 +15,7 @@
     {
       "match": "plugin.json",
       "action": "owned",
-      "reason": "Codex plugin manifest. Upstream's names Cursor's layout, so codex/plugin.json is written by hand and carries the -codex version."
+      "reason": "Codex plugin manifest. Upstream's names Cursor's layout, so harnesses/codex/plugin.json is written by hand and carries the -codex version."
     },
     {
       "match": ".cursor-plugin/**",
@@ -35,7 +35,7 @@
     {
       "match": "docs/**",
       "action": "skip",
-      "reason": "Human guide written around Cursor's UI and custom modes, plus a Claude Code adapter note. The Codex adapter notes live in codex/skills/poteto-mode/references/codex-tools.md."
+      "reason": "Human guide written around Cursor's UI and custom modes, plus a Claude Code adapter note. The Codex adapter notes live in harnesses/codex/skills/poteto-mode/references/codex-tools.md."
     },
     {
       "match": "automations/**",
@@ -50,7 +50,7 @@
     {
       "match": "README.md",
       "action": "owned",
-      "reason": "codex/README.md is written for Codex users. Upstream README changes are listed for manual carry-over."
+      "reason": "harnesses/codex/README.md is written for Codex users. Upstream README changes are listed for manual carry-over."
     },
     {
       "match": "agents/poteto-agent.md",

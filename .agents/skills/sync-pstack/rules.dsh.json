@@ -5,8 +5,8 @@
     "ref": "main",
     "versionFile": "plugin.json"
   },
-  "target": "pstack",
-  "state": ".upstream/pstack",
+  "target": "harnesses/dsh",
+  "state": ".upstream/dsh",
   "manifest": {
     "file": "package.json",
     "versionSuffix": "-dsh"
@@ -15,7 +15,7 @@
     {
       "match": "plugin.json",
       "action": "skip",
-      "reason": "Cursor plugin manifest. The DSH manifest is pstack/package.json."
+      "reason": "Cursor plugin manifest. The DSH manifest is harnesses/dsh/package.json."
     },
     {
       "match": ".cursor-plugin/**",
@@ -50,7 +50,7 @@
     {
       "match": "README.md",
       "action": "owned",
-      "reason": "pstack/README.md is written for DSH users. Upstream README changes are listed for manual carry-over."
+      "reason": "harnesses/dsh/README.md is written for DSH users. Upstream README changes are listed for manual carry-over."
     },
     {
       "match": "agents/poteto-agent.md",

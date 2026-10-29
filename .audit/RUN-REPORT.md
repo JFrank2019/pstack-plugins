@@ -4,7 +4,9 @@
 
 - `consolidation.tsv`:迁入本仓库、同步、发布、清理(阶段 0、1、2、4、5、6),以及历史重建和收尾(`h`、`i` 开头的行)。
 - `codex-port.tsv`:Codex 版移植,含用源码和实机测得的 Codex 事实(阶段 3)。
-- `pstack-port.tsv`:迁入前 DSH 版的移植与两次同步记录。
+- `dsh-port.tsv`:迁入前 DSH 版的移植与两次同步记录。文件原名 `pstack-port.tsv`,`consolidation.tsv` 里早先的行还用旧名。
+
+2026-10-29 起,目录按 harness 重新命名。`pstack/` 成为 `harnesses/dsh/`,`codex/` 成为 `harnesses/codex/`,`.upstream/pstack/` 成为 `.upstream/dsh/`。本报告和 `.audit/` 里的路径是改名前的写法,日志行不改。改名的决定和验证见 `consolidation.tsv` 的 `j0-layout` 和 `j1-layout-verify` 行。已经用 `dsh plugin add` 装过 DSH 包的用户,要用新路径再装一次。
 
 ## 历史重建
 
@@ -71,5 +73,5 @@
 1. **旧 GitHub 仓库 `JFrank2019/dsh-plugins` 已不存在,这一项已解决。** 它删除前是私有的,0 fork、0 star、0 issue 和 PR、0 release、0 tag,只有 `main`(取自 2026-10-28 的检查)。它的最终内容在新仓库里。它的 3 个提交(含 0.15.20 和 0.15.28 的版本)没有被历史重建收录,重建前的备份又已按你的要求删除,所以旧 GitHub 仓库、备份和本地对象库里都不再有它们的副本。GitHub 上 `pstack-plugins` 的服务器端还留着它们的不可达副本,按哈希 `3a8ad07f39d9` 用 `git fetch` 实测能取回这 3 个提交,回收时间由 GitHub 决定(`i10-remote-dangling`)。
 2. 删除旧目录前,有 4 个你自己 10 月 25 日起运行的进程以它为工作目录(`zcode-cli`、`cursor-agent` 和它的 sequential-thinking MCP 服务)。它们仍在运行,但工作目录已不存在,新会话请在 `pstack-plugins` 里打开。
 3. `~/.codex/.codex-global-state.json`(及 `.bak`)和 `~/.config/magpie/routing/2026-10-28.jsonl` 里还有旧路径字符串。它们是应用状态和日志,我没有读取内容也没有改动;如果 Codex 应用的最近工作区里还显示旧路径,手动移除即可。`~/.dsh` 没有引用旧路径。
-4. 新仓库是私有的,所以从 GitHub 安装 Codex 插件或 DSH 包时需要 git 凭据;本地路径安装不受影响。
+4. 新仓库创建时是私有的(上文写的"私有"都指创建时),现在是公开的,你在 2026-10-29 确认保持公开(`j2-visibility`)。我没查到是谁在什么时候改的:我跑过的 `gh` 命令里没有改可见性的,GitHub 的 `PublicEvent` 时间戳是建库那一秒,不能用来判断。公开后从 GitHub 安装 Codex 插件不需要 git 凭据(在没有凭据的环境里实测过),本地路径安装不受影响。
 5. 两个包里 `bun install` 生成的 `node_modules` 已被 `.gitignore` 忽略,验证后已删除。

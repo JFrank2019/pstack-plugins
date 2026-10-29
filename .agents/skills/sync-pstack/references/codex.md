@@ -6,9 +6,9 @@ Facts are labeled. **Measured** means observed on `codex-cli 0.162.1` through `s
 
 ## What the sync does not touch
 
-- `codex/plugin.json` and `codex/README.md` are owned files. The plan lists upstream changes to their upstream twins, and you carry them over by hand. After a sync, set `version` in `codex/plugin.json` to `<upstream version>-codex.1`. `check`, and so `finish`, fails on a version that does not start with `<upstream version>-codex.`.
+- `harnesses/codex/plugin.json` and `harnesses/codex/README.md` are owned files. The plan lists upstream changes to their upstream twins, and you carry them over by hand. After a sync, set `version` in `harnesses/codex/plugin.json` to `<upstream version>-codex.1`. `check`, and so `finish`, fails on a version that does not start with `<upstream version>-codex.`.
 - `.agents/plugins/marketplace.json` lists the plugin. It has no upstream twin.
-- Three files under `codex/skills/poteto-mode/references/` have no upstream twin: `codex-tools.md`, `model-roles.md`, and `codex-skill-format.md`. Every skill links the first through the loading prelude. Keep them in step with this page. When a Codex fact changes, change both in one commit.
+- Three files under `harnesses/codex/skills/poteto-mode/references/` have no upstream twin: `codex-tools.md`, `model-roles.md`, and `codex-skill-format.md`. Every skill links the first through the loading prelude. Keep them in step with this page. When a Codex fact changes, change both in one commit.
 - `agents/poteto-agent.md` and `agents/comment-sicko.md` move into `skills/poteto-mode/references/poteto-agent.md` and `skills/no-comments/references/comment-sicko.md`. Codex has no agent files.
 - The sync skips `.cursor-plugin/`, `assets/`, `docs/`, `automations/`, and `skills/make-bot-ui/`. They are Cursor's plugin listing, guide, hosted automations, and a Grok Bot skill. `rules.codex.json` gives the reason for each.
 
@@ -57,7 +57,7 @@ Codex has no pstack model defaults. `spawn_agent` tells the model to omit `model
 
 The pstack models block lives in `$CODEX_HOME/AGENTS.md`, which is `~/.codex/AGENTS.md` by default. Codex puts that file and the project's `AGENTS.md` in the first user message of every session, children included (measured by `verify-codex`), so a role reads its line with no tool call. Keep the block between the two marker comments and never touch the rest of the file. The sandbox keeps `$CODEX_HOME` read-only, so `$pstack:setup-pstack` writes it with an escalated command and shows the block when the write is refused.
 
-A role value is `model[@effort]`, `inherit-parent`, or a comma-separated list for panel roles. `codex/skills/poteto-mode/references/model-roles.md` is the one place that turns a role line into `spawn_agent` fields. Routed skills point to it by path. Do not restate its steps inside a skill, because the copies drift.
+A role value is `model[@effort]`, `inherit-parent`, or a comma-separated list for panel roles. `harnesses/codex/skills/poteto-mode/references/model-roles.md` is the one place that turns a role line into `spawn_agent` fields. Routed skills point to it by path. Do not restate its steps inside a skill, because the copies drift.
 
 `codex debug models` prints the catalog as JSON. Each model lists the efforts it supports, a subset of `low`, `medium`, `high`, `xhigh`, `max`, and `ultra`, and `spawn_agent` rejects another value. pstack never picks `ultra` for the user. The budget names stay `unlimited`, `large`, `medium`, and `small`. They set the effort of every real model in the block to `max`, `xhigh`, `high`, and `medium`. A model that lacks the target effort gets its highest supported effort at or below it.
 
